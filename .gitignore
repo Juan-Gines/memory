@@ -1,0 +1,25 @@
+# Ignorar archivos de configuración de IDE
+/.vscode/
+*.iml
+*.ipr
+*.iws
+
+# Ignorar archivos de compilación y paquetes
+/target/
+/build/
+/out/
+*.jar
+*.war
+*.ear
+*.class
+
+# Ignorar archivos de registro y otros archivos temporales
+*.log
+*.tmp
+
+# Ignorar archivos de configuración local
+*.properties
+!keystore.properties
+
+# Ignorar archivos de base de datos
+*.db
