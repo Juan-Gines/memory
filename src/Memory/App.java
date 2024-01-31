@@ -10,8 +10,7 @@ public class App {
         String opcio = "";
         tauler.inicialitzarTauler();
         do {
-            Menu.imprimirMenu();
-            System.out.print("Escull una opció: ");
+            Menu.imprimirMenuPrincipal();
             opcio = in.nextLine();
             switch (opcio) {
                 case "1":
@@ -21,6 +20,9 @@ public class App {
                     tauler.mostrarTaulerOcult();
                     break;
                 case "3":
+                    tauler.mostrarTauler(-1, -1, -1, -1);
+                    break;
+                case "4":
                     tauler.llevarFitxes();
                     break;
                 case "0":

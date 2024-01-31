@@ -70,15 +70,65 @@ public class Tauler {
   }
 
   public void llevarFitxes() {
-    System.out.print("Introdueix la fila primera: ");
-    int fila = Utilitats.getIntFromString();
-    System.out.print("Introdueix la columna primera: ");
-    int columna = Utilitats.getIntFromString();
-    mostrarTauler(fila, columna, -1, -1);
-    System.out.print("Introdueix la fila segona: ");
-    int fila2 = Utilitats.getIntFromString();
-    System.out.print("Introdueix la columna segona: ");
-    int columna2 = Utilitats.getIntFromString();
-    mostrarTauler(fila, columna, fila2, columna2);
+    int fila = -1;
+    int columna = -1;
+    int fila2 = -1;
+    int columna2 = -1;
+    do {
+      System.out.print("Introdueix la fila primera: ");
+      fila = Utilitats.getIntFromString();
+      System.out.print("Introdueix la columna primera: ");
+      columna = Utilitats.getIntFromString();
+      mostrarTauler(fila, columna, fila2, columna2);
+    } while (comprovarFitxes(fila, columna, fila2, columna2));
+    do {
+      System.out.print("Introdueix la fila segona: ");
+      fila2 = Utilitats.getIntFromString();
+      System.out.print("Introdueix la columna segona: ");
+      columna2 = Utilitats.getIntFromString();
+      mostrarTauler(fila, columna, fila2, columna2);
+    } while (comprovarFitxes(fila, columna, fila2, columna2));
+    comprovarJugada(fila, columna, fila2, columna2);
+  }
+
+  private boolean comprovarFitxes(int fila1, int columna1, int fila2, int columna2) {
+    if (fila2 == -1 && columna2 == -1 && !tauler[fila1][columna1].equals("?")) {
+      System.out.println("No pots seleccionar una fitxa que ja està descoberta");
+      return true;
+    } else if (fila2 != -1 && columna2 != -1 && !tauler[fila2][columna2].equals("?")) {
+      System.out.println("No pots seleccionar una fitxa que ja està descoberta");
+      return true;
+    } else if (fila1 == fila2 && columna1 == columna2) {
+      System.out.println("No pots seleccionar la mateixa fitxa");
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  private void comprovarJugada(int fila1, int columna1, int fila2, int columna2) {
+    if (taulerOcult[fila1][columna1].equals(taulerOcult[fila2][columna2])) {
+      tauler[fila1][columna1] = taulerOcult[fila1][columna1];
+      tauler[fila2][columna2] = taulerOcult[fila2][columna2];
+      System.out.println("Has encertat! Guanyes 1 punt");
+    } else {
+      tauler[fila1][columna1] = "?";
+      tauler[fila2][columna2] = "?";
+      System.out.println("ho sento, Has fallat!");
+    }
+    if (comprovarGuanyador())
+      System.out.println("Has guanyat!");
+  }
+
+  private boolean comprovarGuanyador() {
+    boolean guanyador = true;
+    for (int i = 0; i < Constants.MAX_FILAS; i++) {
+      for (int j = 0; j < Constants.MAX_COLUMNAS; j++) {
+        if (!tauler[i][j].equals("?")) {
+          guanyador = false;
+        }
+      }
+    }
+    return guanyador;
   }
 }
