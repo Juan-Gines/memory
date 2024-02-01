@@ -8,6 +8,7 @@ public class Jugada {
   private boolean encertada;
   private boolean finalJoc;
 
+  // Constructor de la classe Jugada amb els setters i getters
   public Jugada() {
     this.fila1 = -1;
     this.columna1 = -1;

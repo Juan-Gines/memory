@@ -1,6 +1,8 @@
 package Memory;
 
 public class Misatges {
+
+  // Mètodes per imprimir missatges per pantalla
   public static void escullOpció() {
     System.out.print(Constants.ANSI_CYAN + "Escull una opció: " + Constants.ANSI_RESET);
   }

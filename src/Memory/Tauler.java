@@ -140,8 +140,8 @@ public class Tauler {
       Misatges.hasEncertat(jugador.getNom());
   }
 
-  // Comprovem que les fitxes escollides no estiguin destapades i que no siguin la
-  // mateixes
+  // Comprovem que les fitxes escollides no estiguin destapades
+  // i que no siguin les mateixes
   private boolean comprovarFitxes(int fila1, int columna1, int fila2, int columna2, Jugador jugador) {
     if (fila2 == -1 && columna2 == -1 && !tauler[fila1][columna1].equals("?")) {
       if (!jugador.isMaquina())

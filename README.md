@@ -16,6 +16,10 @@ Fins que totes les fitxes estiguin girades.
 
 Objectiu: ser capaços de desenvolupar un programa en llenguatge Java que permetrà a l’usuari jugar al popular joc del memory.
 
-El programa ens permetrá jugar sols o competir dues persones
+El programa ens permetrá jugar sols o competir dues persones.
 
+## Ampliació del joc
 
+Ara podem jugar contra l'ordinador
+
+- Mode fácil "aleatori" del ordinador.

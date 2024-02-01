@@ -7,6 +7,7 @@ public class App {
 
     public static void main(String[] args) throws Exception {
 
+        // Entrada principal del programa
         boolean tornaraJugar = true;
         do {
             Jugar jugar = new Jugar();

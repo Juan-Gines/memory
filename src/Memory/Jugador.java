@@ -5,12 +5,14 @@ public class Jugador {
   private int puntuacio;
   private boolean maquina;
 
+  // Constructors de la classe Jugador humá
   public Jugador(String nom) {
     this.nom = nom;
     this.puntuacio = 0;
     this.maquina = false;
   }
 
+  // Constructor de la classe Jugador màquina
   public Jugador(boolean maquina) {
     this.nom = "Maquina";
     this.puntuacio = 0;
@@ -27,10 +29,6 @@ public class Jugador {
 
   public int getPuntuacio() {
     return puntuacio;
-  }
-
-  public void setPuntuacio(int puntuacio) {
-    this.puntuacio = puntuacio + 1;
   }
 
   public void incrementarPuntuacio() {
