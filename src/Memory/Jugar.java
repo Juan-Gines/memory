@@ -3,38 +3,32 @@ package Memory;
 import java.util.Scanner;
 
 public class Jugar {
-  private Tauler tauler;
-  private Jugador jugador1;
-  private Jugador jugador2;
+  private Tauler tauler = new Tauler();
+  private Jugador[] jugadors = new Jugador[2];
   private int tirades = 0;
+  private boolean guayador = false;
   private Scanner in = new Scanner(System.in);
-
-  Jugar() {
-    this.tauler = new Tauler();
-  }
 
   public void comensarJoc() {
     Menu.imprimirMenuPrincipal();
-    Misatges.escullOpció();
     String opcio = in.nextLine();
     escollirJoc(opcio);
     tauler.inicialitzarTauler();
-    tauler.mostrarTaulerOcult();
     juguem();
   }
 
   private void escollirJoc(String opcio) {
     switch (opcio) {
       case "1":
-        jugador1 = escollirNomJugador(1);
+        jugadors[0] = escollirNomJugador(1);
         break;
       case "2":
-        jugador1 = escollirNomJugador(1);
-        jugador2 = escollirNomJugador(2);
+        jugadors[0] = escollirNomJugador(1);
+        jugadors[1] = escollirNomJugador(2);
         break;
       case "3":
-        jugador1 = escollirNomJugador(1);
-        jugador2 = new Jugador(true);
+        jugadors[0] = escollirNomJugador(1);
+        jugadors[1] = new Jugador(true);
         break;
       case "0":
         System.out.println("Adeu!");
@@ -47,12 +41,18 @@ public class Jugar {
   }
 
   private void juguem() {
-    boolean novaTirada = true;
+    int numJugador = -1;
     do {
-      Misatges.torn(jugador1.getNom(), jugador1.getPuntuacio(), tirades);
-      tauler.llevarFitxes(jugador1);
+      if (numJugador == -1 || jugadors[1] == null) {
+        numJugador = 0;
+      } else {
+        numJugador = (numJugador == 0) ? 1 : 0;
+      }
+      Misatges.torn(jugadors[numJugador].getNom(), jugadors[numJugador].getPuntuacio(), tirades);
+      this.guayador = tauler.llevarFitxes(jugadors[numJugador], jugadors);
       this.tirades++;
-    } while (novaTirada);
+    } while (!isGuanyador());
+    finalJoc();
   }
 
   public Jugador escollirNomJugador(int numJugador) {
@@ -73,5 +73,31 @@ public class Jugar {
         Misatges.opcioIncorrecte();
       }
     } while (true);
+  }
+
+  private void finalJoc() {
+    if (jugadors[1] == null || jugadors[0].getPuntuacio() > jugadors[1].getPuntuacio()) {
+      Misatges.hasGuanyat(jugadors[0].getNom(), jugadors[0].getPuntuacio(), tirades);
+    } else if (jugadors[0].getPuntuacio() < jugadors[1].getPuntuacio()) {
+      Misatges.hasGuanyat(jugadors[1].getNom(), jugadors[1].getPuntuacio(), tirades);
+    } else {
+      Misatges.hihaEmpat(jugadors[0].getNom(), jugadors[1].getNom(), jugadors[0].getPuntuacio(), tirades);
+    }
+  }
+
+  public Jugador[] getJugadors() {
+    return jugadors;
+  }
+
+  public int getTirades() {
+    return tirades;
+  }
+
+  private boolean isGuanyador() {
+    return guayador;
+  }
+
+  public void tenimGuanyador() {
+    this.guayador = true;
   }
 }

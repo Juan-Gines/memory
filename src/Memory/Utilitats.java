@@ -15,7 +15,8 @@ public class Utilitats {
       if (numero.matches("^[0-3]$")) {
         return Integer.parseInt(numero);
       } else {
-        System.out.println("El valor introduït no és un número entre 0 i 3");
+        System.out.print(Constants.ANSI_RED + "El valor introduït no és un número entre 0 i 3. Torna a provar:"
+            + Constants.ANSI_RESET + " ");
       }
     } while (true);
   }

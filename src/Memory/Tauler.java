@@ -5,6 +5,7 @@ public class Tauler {
   private String[][] tauler = new String[Constants.MAX_FILAS][Constants.MAX_COLUMNAS];
   private String[][] taulerOcult = new String[Constants.MAX_FILAS][Constants.MAX_COLUMNAS];
 
+  // Inicialitzem el tauler amb les fitxes
   public void inicialitzarTauler() {
     for (int i = 0; i < Constants.MAX_FILAS; i++) {
       for (int j = 0; j < Constants.MAX_COLUMNAS; j++) {
@@ -25,31 +26,38 @@ public class Tauler {
     }
   }
 
+  // Mostrem el tauler ocult per fe proves
   public void mostrarTaulerOcult() {
+    System.out.println(Constants.ANSI_CYAN);
     for (int i = 0; i < Constants.MAX_FILAS; i++) {
       for (int j = 0; j < Constants.MAX_COLUMNAS; j++) {
         System.out.print(taulerOcult[i][j] + " ");
       }
       System.out.println();
     }
+    System.out.println(Constants.ANSI_RESET);
   }
 
+  // Mostrem el tauler de joc
   public void mostrarTauler(int fila1, int columna1, int fila2, int columna2) {
+    System.out.println(Constants.ANSI_YELLOW);
     if (fila1 == -1 && columna1 == -1 && fila2 == -1 && columna2 == -1) {
       for (int i = 0; i < Constants.MAX_FILAS; i++) {
         for (int j = 0; j < Constants.MAX_COLUMNAS; j++) {
           if (tauler[i][j].equals("?"))
             System.out.print(tauler[i][j] + " ");
           else
-            System.out.print(taulerOcult[i][j] + " ");
+            System.out.print(Constants.ANSI_GREEN + taulerOcult[i][j] + " " + Constants.ANSI_YELLOW);
         }
         System.out.println();
       }
     } else if (fila1 != -1 && columna1 != -1 && fila2 == -1 && columna2 == -1) {
       for (int i = 0; i < Constants.MAX_FILAS; i++) {
         for (int j = 0; j < Constants.MAX_COLUMNAS; j++) {
-          if (!tauler[i][j].equals("?") || i == fila1 && j == columna1)
-            System.out.print(taulerOcult[i][j] + " ");
+          if (!tauler[i][j].equals("?"))
+            System.out.print(Constants.ANSI_GREEN + taulerOcult[i][j] + " " + Constants.ANSI_YELLOW);
+          else if (i == fila1 && j == columna1)
+            System.out.print(Constants.ANSI_BLUE + taulerOcult[i][j] + " " + Constants.ANSI_YELLOW);
           else
             System.out.print(tauler[i][j] + " ");
         }
@@ -58,70 +66,101 @@ public class Tauler {
     } else {
       for (int i = 0; i < Constants.MAX_FILAS; i++) {
         for (int j = 0; j < Constants.MAX_COLUMNAS; j++) {
-          if (!tauler[i][j].equals("?") || i == fila1 && j == columna1 || i == fila2 && j == columna2)
-            System.out.print(taulerOcult[i][j] + " ");
+          if (!tauler[i][j].equals("?"))
+            System.out.print(Constants.ANSI_GREEN + taulerOcult[i][j] + " " + Constants.ANSI_YELLOW);
+          else if (i == fila1 && j == columna1 || i == fila2 && j == columna2)
+            System.out.print(Constants.ANSI_BLUE + taulerOcult[i][j] + " " + Constants.ANSI_YELLOW);
           else
             System.out.print(tauler[i][j] + " ");
         }
         System.out.println();
       }
     }
-
+    System.out.println(Constants.ANSI_RESET);
   }
 
-  public void llevarFitxes(Jugador jugador) {
+  // Llevem les fitxes del tauler
+  public boolean llevarFitxes(Jugador jugador, Jugador[] jugadors) {
     int fila = -1;
     int columna = -1;
     int fila2 = -1;
     int columna2 = -1;
+
+    // Primera fitxa a destapar
     do {
-      Misatges.escollir(1, 1);
-      fila = Utilitats.getIntFromString();
-      Misatges.escollir(1, 2);
-      columna = Utilitats.getIntFromString();
-      mostrarTauler(fila, columna, fila2, columna2);
-    } while (comprovarFitxes(fila, columna, fila2, columna2));
+      if (!jugador.isMaquina()) {
+        Misatges.escollir(1, 1);
+        fila = Utilitats.getIntFromString();
+        Misatges.escollir(1, 2);
+        columna = Utilitats.getIntFromString();
+        mostrarTauler(fila, columna, fila2, columna2);
+      } else {
+        fila = Utilitats.getRandomInteger(3);
+        columna = Utilitats.getRandomInteger(3);
+      }
+    } while (comprovarFitxes(fila, columna, fila2, columna2, jugador));
+
+    // Segona fitxa a destapar
     do {
-      Misatges.escollir(2, 1);
-      fila2 = Utilitats.getIntFromString();
-      Misatges.escollir(2, 2);
-      columna2 = Utilitats.getIntFromString();
+      if (!jugador.isMaquina()) {
+        Misatges.escollir(2, 1);
+        fila2 = Utilitats.getIntFromString();
+        Misatges.escollir(2, 2);
+        columna2 = Utilitats.getIntFromString();
+        mostrarTauler(fila, columna, fila2, columna2);
+      } else {
+        fila2 = Utilitats.getRandomInteger(3);
+        columna2 = Utilitats.getRandomInteger(3);
+      }
+    } while (comprovarFitxes(fila, columna, fila2, columna2, jugador));
+
+    // imprimim el tauler amb la jugada de la máquina
+    if (jugador.isMaquina())
       mostrarTauler(fila, columna, fila2, columna2);
-    } while (comprovarFitxes(fila, columna, fila2, columna2));
-    comprovarJugada(fila, columna, fila2, columna2, jugador);
+
+    // comprovem si la jugada es correcte
+    comprovarJugada(fila, columna, fila2, columna2, jugador, jugadors);
+
+    // comprovem si el joc ha acabat
+    return comprovarGuanyador(jugadors);
   }
 
-  private boolean comprovarFitxes(int fila1, int columna1, int fila2, int columna2) {
+  // Comprovem que les fitxes escollides no estiguin destapades i que no siguin la
+  // mateixes
+  private boolean comprovarFitxes(int fila1, int columna1, int fila2, int columna2, Jugador jugador) {
     if (fila2 == -1 && columna2 == -1 && !tauler[fila1][columna1].equals("?")) {
-      Misatges.fitxaDescoberta();
+      if (!jugador.isMaquina())
+        Misatges.fitxaDescoberta();
       return true;
     } else if (fila2 != -1 && columna2 != -1 && !tauler[fila2][columna2].equals("?")) {
-      Misatges.fitxaDescoberta();
+      if (!jugador.isMaquina())
+        Misatges.fitxaDescoberta();
       return true;
     } else if (fila1 == fila2 && columna1 == columna2) {
-      Misatges.mateixaFitxa();
+      if (!jugador.isMaquina())
+        Misatges.mateixaFitxa();
       return true;
     } else {
       return false;
     }
   }
 
-  private void comprovarJugada(int fila1, int columna1, int fila2, int columna2, Jugador jugador) {
+  // Comprovem si la jugada es guanyadora o perdedora
+  private void comprovarJugada(int fila1, int columna1, int fila2, int columna2, Jugador jugador, Jugador[] jugadors) {
     if (taulerOcult[fila1][columna1].equals(taulerOcult[fila2][columna2])) {
       tauler[fila1][columna1] = taulerOcult[fila1][columna1];
       tauler[fila2][columna2] = taulerOcult[fila2][columna2];
-      Misatges.hasEncertat();
+      Misatges.hasEncertat(jugador.getNom());
       jugador.incrementarPuntuacio();
     } else {
       tauler[fila1][columna1] = "?";
       tauler[fila2][columna2] = "?";
-      Misatges.hasFallat();
+      Misatges.hasFallat(jugador.getNom());
     }
-    if (comprovarGuanyador())
-      Misatges.hasGuanyat();
   }
 
-  private boolean comprovarGuanyador() {
+  // Comprovem si el joc ha acabat y imprimim el guanyador o el empat
+  private boolean comprovarGuanyador(Jugador[] jugadors) {
     boolean guanyador = true;
     for (int i = 0; i < Constants.MAX_FILAS; i++) {
       for (int j = 0; j < Constants.MAX_COLUMNAS; j++) {
@@ -130,6 +169,10 @@ public class Tauler {
         }
       }
     }
-    return guanyador;
+    if (guanyador) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
