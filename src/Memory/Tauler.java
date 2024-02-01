@@ -85,7 +85,7 @@ public class Tauler {
   }
 
   // Llevem les fitxes del tauler
-  public void llevarFitxes(Jugador jugador, Jugador[] jugadors, Jugada jugada) {
+  public void llevarFitxes(Jugador jugador, Jugada jugada) {
     int fila = jugada.getFila1();
     int columna = jugada.getColumna1();
     int fila2 = jugada.getFila2();
@@ -128,15 +128,16 @@ public class Tauler {
     jugada.setColumna1(columna);
     jugada.setFila2(fila2);
     jugada.setColumna2(columna2);
-    System.out.println(jugada);
-
-    // comprovem si el joc ha acabat
-    comprovarGuanyador(jugada, jugadors);
-    System.out.println(jugada);
 
     // comprovem si la jugada es correcte
-    comprovarJugada(jugada, jugador, jugadors);
-    System.out.println(jugada);
+    comprovarJugada(jugada, jugador);
+
+    // comprovem si el joc ha acabat
+    comprovarGuanyador(jugada);
+
+    // imprimim el missatge de encertat
+    if (!jugada.isFinalJoc() && jugada.isEncertada())
+      Misatges.hasEncertat(jugador.getNom());
   }
 
   // Comprovem que les fitxes escollides no estiguin destapades i que no siguin la
@@ -160,7 +161,7 @@ public class Tauler {
   }
 
   // Comprovem si la jugada es guanyadora o perdedora
-  public void comprovarJugada(Jugada jugada, Jugador jugador, Jugador[] jugadors) {
+  public void comprovarJugada(Jugada jugada, Jugador jugador) {
     int fila1 = jugada.getFila1();
     int columna1 = jugada.getColumna1();
     int fila2 = jugada.getFila2();
@@ -168,8 +169,6 @@ public class Tauler {
     if (taulerOcult[fila1][columna1].equals(taulerOcult[fila2][columna2])) {
       tauler[fila1][columna1] = taulerOcult[fila1][columna1];
       tauler[fila2][columna2] = taulerOcult[fila2][columna2];
-      if (!jugada.isFinalJoc())
-        Misatges.hasEncertat(jugador.getNom());
       jugador.incrementarPuntuacio();
       jugada.setEncertada(true);
     } else {
@@ -181,7 +180,7 @@ public class Tauler {
   }
 
   // Comprovem si el joc ha acabat y imprimim el guanyador o el empat
-  private void comprovarGuanyador(Jugada jugada, Jugador[] jugadors) {
+  private void comprovarGuanyador(Jugada jugada) {
     boolean guanyador = true;
     for (int i = 0; i < Constants.MAX_FILAS; i++) {
       for (int j = 0; j < Constants.MAX_COLUMNAS; j++) {
@@ -190,6 +189,7 @@ public class Tauler {
         }
       }
     }
+
     jugada.setFinalJoc(guanyador);
   }
 }

@@ -54,7 +54,7 @@ public class Jugar {
       }
       Misatges.torn(jugadors[numJugador].getNom(), jugadors[numJugador].getPuntuacio(), tirades);
       jugada = new Jugada();
-      tauler.llevarFitxes(jugadors[numJugador], jugadors, jugada);
+      tauler.llevarFitxes(jugadors[numJugador], jugada);
       this.tirades++;
     } while (!jugada.isFinalJoc());
     finalJoc();
