@@ -42,16 +42,21 @@ public class Jugar {
 
   private void juguem() {
     int numJugador = -1;
+    Jugada jugada = new Jugada();
+    tauler.mostrarTaulerOcult();
     do {
-      if (numJugador == -1 || jugadors[1] == null) {
-        numJugador = 0;
-      } else {
-        numJugador = (numJugador == 0) ? 1 : 0;
+      if (!jugada.isEncertada()) {
+        if (numJugador == -1 || jugadors[1] == null) {
+          numJugador = 0;
+        } else {
+          numJugador = (numJugador == 0) ? 1 : 0;
+        }
       }
       Misatges.torn(jugadors[numJugador].getNom(), jugadors[numJugador].getPuntuacio(), tirades);
-      this.guayador = tauler.llevarFitxes(jugadors[numJugador], jugadors);
+      jugada = new Jugada();
+      tauler.llevarFitxes(jugadors[numJugador], jugadors, jugada);
       this.tirades++;
-    } while (!isGuanyador());
+    } while (!jugada.isFinalJoc());
     finalJoc();
   }
 

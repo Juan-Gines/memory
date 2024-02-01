@@ -45,7 +45,8 @@ public class Misatges {
   }
 
   public static void hasEncertat(String nomJugador) {
-    System.out.println(Constants.ANSI_GREEN + "Has encertat " + nomJugador + "! Guanyes 1 punt" + Constants.ANSI_RESET);
+    System.out.println(Constants.ANSI_GREEN + "Has encertat " + nomJugador + "! Guanyes 1 punt i tornes a tirar."
+        + Constants.ANSI_RESET);
   }
 
   public static void demanaNomJugador(int jugador) {
