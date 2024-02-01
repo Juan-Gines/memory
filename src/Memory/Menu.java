@@ -7,7 +7,7 @@ public class Menu {
     System.out.println("2. Jugar 2 jugadors");
     System.out.println("3. Jugar contra la màquina");
     System.out.println("0. Sortir");
-    Misatges.imprimirEscullOpció();
+    Misatges.escullOpció();
   }
 
 }
