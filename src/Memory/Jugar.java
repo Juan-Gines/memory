@@ -31,6 +31,11 @@ public class Jugar {
         jugadors[0] = escollirNomJugador(1);
         jugadors[1] = new Jugador(true);
         break;
+      case "4":
+        jugadors[0] = escollirNomJugador(1);
+        jugadors[1] = new Jugador(true);
+        tauler.setDificultatAlta(true);
+        break;
       case "0":
         System.out.println("Adeu!");
         System.exit(0);

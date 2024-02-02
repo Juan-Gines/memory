@@ -20,6 +20,6 @@ El programa ens permetrá jugar sols o competir dues persones.
 
 ## Ampliació del joc
 
-Ara podem jugar contra l'ordinador
+Ara podem jugar contra l'ordinador.
 
 - Mode fácil "aleatori" del ordinador.
