@@ -75,7 +75,6 @@ public class Jugar {
       } else {
         tauler.llevarFitxes(jugadors[numJugador], jugada);
       }
-      tauler.mostrarConciencia();
       jugadors[numJugador].incrementarTorn();
       this.tirades++;
     } while (!jugada.isFinalJoc());
