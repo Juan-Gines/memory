@@ -2,20 +2,19 @@ package Memory;
 
 public class Jugador {
   private String nom;
-  private int puntuacio;
+  private int puntuacio = 0;
   private boolean maquina;
+  private int torn = 0;
 
   // Constructors de la classe Jugador humá
   public Jugador(String nom) {
     this.nom = nom;
-    this.puntuacio = 0;
     this.maquina = false;
   }
 
   // Constructor de la classe Jugador màquina
   public Jugador(boolean maquina) {
-    this.nom = "Maquina";
-    this.puntuacio = 0;
+    this.nom = "Máquina";
     this.maquina = true;
   }
 
@@ -33,6 +32,14 @@ public class Jugador {
 
   public void incrementarPuntuacio() {
     this.puntuacio = puntuacio + 1;
+  }
+
+  public int getTorn() {
+    return torn;
+  }
+
+  public void incrementarTorn() {
+    this.torn = torn + 1;
   }
 
 }

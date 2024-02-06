@@ -59,6 +59,9 @@ public class Misatges {
     System.out.println(
         Constants.ANSI_PURPLE + "\nEs el teu torn " + nomJugador + "  Punts: " + punts + " Torns Totals: " + tirades
             + Constants.ANSI_RESET);
+    if (nomJugador.equals("Máquina")) {
+      System.out.print(Constants.ANSI_YELLOW + "Click enter per continuar ..." + Constants.ANSI_RESET);
+    }
   }
 
   public static void adeu() {

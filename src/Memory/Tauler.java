@@ -42,6 +42,18 @@ public class Tauler {
     System.out.println(Constants.ANSI_RESET);
   }
 
+  // Mostrem el tauler ocult per fe proves
+  public void mostrarConciencia() {
+    System.out.println(Constants.ANSI_CYAN);
+    for (int i = 0; i < Constants.MAX_FILAS; i++) {
+      for (int j = 0; j < Constants.MAX_COLUMNAS; j++) {
+        System.out.print(conciencia[i][j] + " ");
+      }
+      System.out.println();
+    }
+    System.out.println(Constants.ANSI_RESET);
+  }
+
   // Mostrem el tauler de joc
   public void mostrarTauler(int fila1, int columna1, int fila2, int columna2) {
     System.out.println(Constants.ANSI_YELLOW);
@@ -55,8 +67,9 @@ public class Tauler {
           System.out.print(Constants.ANSI_GREEN + taulerOcult[i][j] + " " + Constants.ANSI_YELLOW);
       }
       System.out.println();
+
     }
-    System.out.println(Constants.ANSI_RESET);
+    System.out.print(Constants.ANSI_RESET);
   }
 
   // Llevem les fitxes del tauler
@@ -74,9 +87,6 @@ public class Tauler {
         Misatges.escollir(1, 2);
         columna = Utilitats.getIntFromString();
         mostrarTauler(fila, columna, fila2, columna2);
-      } else if (!dificultatAlta) {
-        fila = Utilitats.getRandomInteger(3);
-        columna = Utilitats.getRandomInteger(3);
       } else {
         fila = Utilitats.getRandomInteger(3);
         columna = Utilitats.getRandomInteger(3);
@@ -91,9 +101,6 @@ public class Tauler {
         Misatges.escollir(2, 2);
         columna2 = Utilitats.getIntFromString();
         mostrarTauler(fila, columna, fila2, columna2);
-      } else if (!dificultatAlta) {
-        fila = Utilitats.getRandomInteger(3);
-        columna = Utilitats.getRandomInteger(3);
       } else {
         fila2 = Utilitats.getRandomInteger(3);
         columna2 = Utilitats.getRandomInteger(3);
@@ -110,15 +117,18 @@ public class Tauler {
     jugada.setFila2(fila2);
     jugada.setColumna2(columna2);
 
+    System.out.println();
     // comprovem si la jugada es correcte
     comprovarJugada(jugada, jugador);
 
     // comprovem si el joc ha acabat
     comprovarGuanyador(jugada);
 
-    // imprimim el missatge de encertat
-    if (!jugada.isFinalJoc() && jugada.isEncertada())
-      Misatges.hasEncertat(jugador.getNom());
+    // imprimim el missatge de encertat 
+    if (!jugada.isFinalJoc() && jugada.isEncertada()) {
+      Misatges.hasEncertat(jugador.getNom());      
+    }
+    
   }
 
   // Comprovem que les fitxes escollides no estiguin destapades
@@ -141,7 +151,7 @@ public class Tauler {
     }
   }
 
-  // Comprovem si la jugada es guanyadora o perdedora
+  // Comprovem si la jugada es guanyadora o perdedora i guardem resultats a la conciencia, tauler i puntuació
   private void comprovarJugada(Jugada jugada, Jugador jugador) {
     int fila1 = jugada.getFila1();
     int columna1 = jugada.getColumna1();
@@ -150,11 +160,15 @@ public class Tauler {
     if (taulerOcult[fila1][columna1].equals(taulerOcult[fila2][columna2])) {
       tauler[fila1][columna1] = taulerOcult[fila1][columna1];
       tauler[fila2][columna2] = taulerOcult[fila2][columna2];
+      conciencia[fila1][columna1] = "!";
+      conciencia[fila2][columna2] = "!";
       jugador.incrementarPuntuacio();
       jugada.setEncertada(true);
     } else {
       tauler[fila1][columna1] = "?";
       tauler[fila2][columna2] = "?";
+      conciencia[fila1][columna1] = taulerOcult[fila1][columna1];
+      conciencia[fila2][columna2] = taulerOcult[fila2][columna2];
       Misatges.hasFallat(jugador.getNom());
       jugada.setEncertada(false);
     }
@@ -180,4 +194,94 @@ public class Tauler {
     this.dificultatAlta = dificultatAlta;
   }
 
+  // Funció que torna si la dificultat es alta o no
+
+  public boolean isDificultatAlta() {
+    return dificultatAlta;
+  }
+
+  public void llevarFitxesMaquinaInteligent(Jugador jugador, Jugada jugada) {
+    int fila = -1;
+    int columna = -1;
+    int fila2 = -1;
+    int columna2 = -1;
+
+    // Primera fitxa a destapar (jugador o máquina)
+
+    boolean parella = false;
+
+    // La máquina intenta trobar una parella en les fitxes que ja s'han destapat
+    for (int i = 0; i < Constants.MAX_FILAS; i++) {
+      for (int j = 0; j < Constants.MAX_COLUMNAS; j++) {
+        if (!conciencia[i][j].equals("?") && !conciencia[i][j].equals("!")) {         
+          for (int i2 = 0; i2 < Constants.MAX_FILAS; i2++) {
+            for (int j2 = 0; j2 < Constants.MAX_COLUMNAS; j2++) {
+              if (conciencia[i][j].equals(conciencia[i2][j2]) && (i != i2 || j != j2)) {
+                fila = i;
+                columna = j;
+                fila2 = i2;
+                columna2 = j2;
+                parella = true;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    // Si no ha trobat parella, destapa una ficha aleatoria de les que no s'han
+    // destapat
+    if (!parella) {
+      do {
+        fila = Utilitats.getRandomInteger(3);
+        columna = Utilitats.getRandomInteger(3);
+      } while (!conciencia[fila][columna].equals("?"));      
+      conciencia[fila][columna] = taulerOcult[fila][columna];
+      for (int i = 0; i < Constants.MAX_FILAS; i++) {
+        for (int j = 0; j < Constants.MAX_COLUMNAS; j++) {
+          if (conciencia[fila][columna].equals(conciencia[i][j]) && (i != fila || j != columna)) {
+            fila2 = i;
+            columna2 = j;
+            parella = true;
+          }
+        }
+      }
+    }
+
+    // Si no ha trobat parella, destapa una ficha aleatoria de les que no s'han
+    // destapat com a segona opció
+    if (!parella) {
+      do {
+        fila2 = Utilitats.getRandomInteger(3);
+        columna2 = Utilitats.getRandomInteger(3);
+      } while (!conciencia[fila2][columna2].equals("?") || (fila2 == fila && columna2 == columna));
+      conciencia[fila2][columna2] = taulerOcult[fila2][columna2];
+    }
+
+    // imprimim el tauler amb la jugada de la máquina
+    mostrarTauler(fila, columna, fila2, columna2);
+
+    // guardem la jugada
+    jugada.setFila1(fila);
+    jugada.setColumna1(columna);
+    jugada.setFila2(fila2);
+    jugada.setColumna2(columna2);
+
+    // comprovem si la jugada es correcte
+    comprovarJugada(jugada, jugador);
+
+    // comprovem si el joc ha acabat
+    comprovarGuanyador(jugada);
+
+    // imprimim el missatge de encertat guardar "!" en la conciencia de la máquina
+    if (!jugada.isFinalJoc() && jugada.isEncertada()) {
+      Misatges.hasEncertat(jugador.getNom());      
+    }
+
+    // guardar les fitxes destapades en la conciencia de la máquina
+    if (!jugada.isFinalJoc() && !jugada.isEncertada()) {
+      conciencia[fila][columna] = taulerOcult[fila][columna];
+      conciencia[fila2][columna2] = taulerOcult[fila2][columna2];
+    }
+  }
 }

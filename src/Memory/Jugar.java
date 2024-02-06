@@ -50,7 +50,7 @@ public class Jugar {
   private void juguem() {
     int numJugador = -1;
     Jugada jugada = new Jugada();
-    tauler.mostrarTaulerOcult();
+    tauler.mostrarTauler(-1, -1, -1, -1);
     do {
       if (!jugada.isEncertada()) {
         if (numJugador == -1 || jugadors[1] == null) {
@@ -60,8 +60,15 @@ public class Jugar {
         }
       }
       Misatges.torn(jugadors[numJugador].getNom(), jugadors[numJugador].getPuntuacio(), tirades);
+      if (jugadors[numJugador].isMaquina())
+        in.nextLine();
       jugada = new Jugada();
-      tauler.llevarFitxes(jugadors[numJugador], jugada);
+      if (jugadors[numJugador].isMaquina() && tauler.isDificultatAlta()) {
+        tauler.llevarFitxesMaquinaInteligent(jugadors[numJugador], jugada);
+      } else {
+        tauler.llevarFitxes(jugadors[numJugador], jugada);
+      }
+      tauler.mostrarConciencia();
       this.tirades++;
     } while (!jugada.isFinalJoc());
     finalJoc();

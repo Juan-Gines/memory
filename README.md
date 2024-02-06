@@ -23,3 +23,5 @@ El programa ens permetrá jugar sols o competir dues persones.
 Ara podem jugar contra l'ordinador.
 
 - Mode fácil "aleatori" del ordinador.
+
+- Mode dificil, la ia s'hen recorda de les fitxes descobertes i les lleva cuan li toca.
