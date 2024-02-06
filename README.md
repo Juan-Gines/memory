@@ -24,4 +24,6 @@ Ara podem jugar contra l'ordinador.
 
 - Mode fácil "aleatori" del ordinador.
 
-- Mode dificil, la ia s'hen recorda de les fitxes descobertes i les lleva cuan li toca.
+- Mode dificil, la ia s'hen recorda de les fitxes que descobreix i les utilitza per fer parelles.
+
+- Mode molt dificil, la ia s'hen recorda de totes les fitxes que es van descobrint i les utilitza per fer parelles.
