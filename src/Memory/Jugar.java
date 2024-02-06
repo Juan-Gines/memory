@@ -35,6 +35,13 @@ public class Jugar {
         jugadors[0] = escollirNomJugador(1);
         jugadors[1] = new Jugador(true);
         tauler.setDificultatAlta(true);
+        tauler.setNivellBaix(true);
+        break;
+      case "5":
+        jugadors[0] = escollirNomJugador(1);
+        jugadors[1] = new Jugador(true);
+        tauler.setDificultatAlta(true);
+        tauler.setNivellBaix(false);
         break;
       case "0":
         System.out.println("Adeu!");
@@ -59,7 +66,7 @@ public class Jugar {
           numJugador = (numJugador == 0) ? 1 : 0;
         }
       }
-      Misatges.torn(jugadors[numJugador].getNom(), jugadors[numJugador].getPuntuacio(), tirades);
+      Misatges.torn(jugadors[numJugador], tirades);
       if (jugadors[numJugador].isMaquina())
         in.nextLine();
       jugada = new Jugada();
@@ -69,6 +76,7 @@ public class Jugar {
         tauler.llevarFitxes(jugadors[numJugador], jugada);
       }
       tauler.mostrarConciencia();
+      jugadors[numJugador].incrementarTorn();
       this.tirades++;
     } while (!jugada.isFinalJoc());
     finalJoc();
@@ -99,11 +107,11 @@ public class Jugar {
   // Funció que imprimeix el guanyador o l'empat
   private void finalJoc() {
     if (jugadors[1] == null || jugadors[0].getPuntuacio() > jugadors[1].getPuntuacio()) {
-      Misatges.hasGuanyat(jugadors[0].getNom(), jugadors[0].getPuntuacio(), tirades);
+      Misatges.hasGuanyat(jugadors[0], tirades);
     } else if (jugadors[0].getPuntuacio() < jugadors[1].getPuntuacio()) {
-      Misatges.hasGuanyat(jugadors[1].getNom(), jugadors[1].getPuntuacio(), tirades);
+      Misatges.hasGuanyat(jugadors[1], tirades);
     } else {
-      Misatges.hihaEmpat(jugadors[0].getNom(), jugadors[1].getNom(), jugadors[0].getPuntuacio(), tirades);
+      Misatges.hihaEmpat(jugadors, tirades);
     }
   }
 

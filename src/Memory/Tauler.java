@@ -5,7 +5,8 @@ public class Tauler {
   private String[][] tauler = new String[Constants.MAX_FILAS][Constants.MAX_COLUMNAS];
   private String[][] taulerOcult = new String[Constants.MAX_FILAS][Constants.MAX_COLUMNAS];
   private String[][] conciencia = new String[Constants.MAX_FILAS][Constants.MAX_COLUMNAS];
-  private boolean dificultatAlta = false;
+  private boolean dificultatAlta = false; // Dificultat alta true vol dir que la máquina juga amb inteligència
+  private boolean nivellbaix = false; // nivell baix true vol dir que la máquina juga amb inteligència baixa
 
   // Inicialitzem el tauler amb les fitxes
   public void inicialitzarTauler() {
@@ -159,16 +160,18 @@ public class Tauler {
     int columna2 = jugada.getColumna2();
     if (taulerOcult[fila1][columna1].equals(taulerOcult[fila2][columna2])) {
       tauler[fila1][columna1] = taulerOcult[fila1][columna1];
-      tauler[fila2][columna2] = taulerOcult[fila2][columna2];
+      tauler[fila2][columna2] = taulerOcult[fila2][columna2];      
       conciencia[fila1][columna1] = "!";
-      conciencia[fila2][columna2] = "!";
+      conciencia[fila2][columna2] = "!";   
       jugador.incrementarPuntuacio();
       jugada.setEncertada(true);
     } else {
       tauler[fila1][columna1] = "?";
       tauler[fila2][columna2] = "?";
-      conciencia[fila1][columna1] = taulerOcult[fila1][columna1];
-      conciencia[fila2][columna2] = taulerOcult[fila2][columna2];
+      if (!nivellbaix) {
+        conciencia[fila1][columna1] = taulerOcult[fila1][columna1];
+        conciencia[fila2][columna2] = taulerOcult[fila2][columna2];
+      }      
       Misatges.hasFallat(jugador.getNom());
       jugada.setEncertada(false);
     }
@@ -192,6 +195,11 @@ public class Tauler {
 
   public void setDificultatAlta(boolean dificultatAlta) {
     this.dificultatAlta = dificultatAlta;
+  }
+
+  // Funció que controla la dificultat de la ia
+  public void setNivellBaix(boolean nivellbaix) {
+    this.nivellbaix = nivellbaix;
   }
 
   // Funció que torna si la dificultat es alta o no
@@ -283,5 +291,6 @@ public class Tauler {
       conciencia[fila][columna] = taulerOcult[fila][columna];
       conciencia[fila2][columna2] = taulerOcult[fila2][columna2];
     }
+        
   }
 }

@@ -31,14 +31,14 @@ public class Misatges {
     System.out.println(Constants.ANSI_RED + "No pots seleccionar la mateixa fitxa" + Constants.ANSI_RESET);
   }
 
-  public static void hasGuanyat(String nomJugador, int punts, int tirades) {
-    System.out.println(Constants.ANSI_PURPLE + nomJugador + ", Has guanyat! Amb " + punts + " punts i " + tirades
+  public static void hasGuanyat(Jugador jugador, int tirades) {
+    System.out.println(Constants.ANSI_PURPLE + jugador.getNom() + ", Has guanyat! Amb " + jugador.getPuntuacio() + " punts i " + jugador.getTorn() + " tirades en " + tirades
         + " tirades totals." + Constants.ANSI_RESET);
   }
 
-  public static void hihaEmpat(String nomJugador1, String nomJugador2, int punts, int tirades) {
-    System.out.println(Constants.ANSI_PURPLE + "Hi ha un empat entre " + nomJugador1 + " i " + nomJugador2 + " amb "
-        + punts + " punts i "
+  public static void hihaEmpat(Jugador[] jugadors, int tirades) {
+    System.out.println(Constants.ANSI_PURPLE + "Hi ha un empat entre " + jugadors[0].getNom() + " i " + jugadors[1].getNom() + " amb "
+        + jugadors[0].getPuntuacio() + " punts i "
         + tirades + " tirades totals." + Constants.ANSI_RESET);
   }
 
@@ -55,11 +55,11 @@ public class Misatges {
     System.out.print(Constants.ANSI_BLUE + "Introdueix el nom del jugador" + jugador + ": " + Constants.ANSI_RESET);
   }
 
-  public static void torn(String nomJugador, int punts, int tirades) {
+  public static void torn(Jugador jugador, int tirades) {
     System.out.println(
-        Constants.ANSI_PURPLE + "\nEs el teu torn " + nomJugador + "  Punts: " + punts + " Torns Totals: " + tirades
+        Constants.ANSI_PURPLE + "\nEs el teu torn " + jugador.getNom() + "!  Punts: " + jugador.getPuntuacio() + " Torn: " + jugador.getTorn() + " Torns Totals: " + tirades
             + Constants.ANSI_RESET);
-    if (nomJugador.equals("Máquina")) {
+    if (jugador.getNom().equals("Máquina")) {
       System.out.print(Constants.ANSI_YELLOW + "Click enter per continuar ..." + Constants.ANSI_RESET);
     }
   }
