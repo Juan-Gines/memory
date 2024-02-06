@@ -44,7 +44,7 @@ public class Jugar {
         tauler.setNivellBaix(false);
         break;
       case "0":
-        System.out.println("Adeu!");
+        Misatges.adeu();
         System.exit(0);
         break;
       default:
